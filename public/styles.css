@@ -1,0 +1,327 @@
+/* Game Night Board — goblin-green, wizard-purple, sticker-shadow fun.
+   Palette drawn from the store's cartoon goblin logo. */
+
+:root {
+  --cream: #fdf6e3;
+  --paper: #fffdf6;
+  --ink: #16130c;
+  --goblin: #39d353;
+  --goblin-dark: #1f9d3f;
+  --purple: #6d3fa0;
+  --purple-dark: #532d7d;
+  --cyan: #29a8e0;
+  --tan: #f3e9d2;
+  --closed: #efe6cf;
+  --shadow: 5px 5px 0 var(--ink);
+  --shadow-sm: 3px 3px 0 var(--ink);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.45;
+}
+
+/* ---------- header ---------- */
+
+.site-header {
+  text-align: center;
+  padding: 1.6rem 1rem 0.6rem;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.mascot { font-size: 2.6rem; line-height: 1; }
+
+.site-header h1 {
+  font-family: "Arial Black", "Trebuchet MS", sans-serif;
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  letter-spacing: 0.01em;
+  color: var(--goblin);
+  -webkit-text-stroke: 2px var(--ink);
+  text-shadow: 4px 4px 0 var(--ink);
+  margin: 0.3rem 0 0;
+}
+
+.tagline {
+  font-family: "Arial Black", "Trebuchet MS", sans-serif;
+  color: var(--purple);
+  font-size: clamp(1.05rem, 3.4vw, 1.5rem);
+  margin: 0.7rem 0 0.4rem;
+}
+
+.sub { max-width: 560px; margin: 0.2rem auto 1rem; }
+
+.you-label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.you-label input { min-width: min(320px, 80vw); }
+
+/* ---------- shared bits ---------- */
+
+input, select {
+  font: inherit;
+  padding: 0.5rem 0.65rem;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+input:focus, select:focus, button:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 800;
+  padding: 0.55rem 1.1rem;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.15s ease;
+}
+
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+.btn-green { background: var(--goblin); }
+.btn-green:hover { background: var(--goblin-dark); color: #fff; }
+.btn-purple { background: var(--purple); color: #fff; }
+.btn-purple:hover { background: var(--purple-dark); }
+.btn-in { background: var(--purple); color: #fff; }
+.btn-danger { background: #ffb3b3; }
+
+.form-error { color: #b3001b; font-weight: 700; min-height: 1.2em; margin: 0.4rem 0 0; }
+
+/* ---------- day strip ---------- */
+
+.day-strip {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.7rem 1rem;
+  background: var(--cream);
+  border-bottom: 3px solid var(--ink);
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.day-chip {
+  flex: 0 0 auto;
+  font: inherit;
+  font-weight: 800;
+  padding: 0.45rem 0.9rem;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.day-chip small { display: block; font-weight: 600; font-size: 0.72rem; }
+.day-chip.is-today { background: var(--cyan); }
+.day-chip.is-closed { background: var(--closed); color: #6b6250; box-shadow: none; }
+
+/* ---------- board ---------- */
+
+main, .panel {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0.4rem 1rem;
+}
+
+.loading { text-align: center; font-weight: 700; padding: 2rem 0; }
+
+.day-section { margin: 1.4rem 0; scroll-margin-top: 84px; }
+
+.day-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  border-bottom: 3px dashed var(--ink);
+  padding-bottom: 0.3rem;
+}
+
+.day-head h2 {
+  font-family: "Arial Black", "Trebuchet MS", sans-serif;
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.day-head .hours { font-weight: 700; color: var(--purple); }
+.day-head .today-badge {
+  background: var(--cyan);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.05rem 0.6rem;
+  font-weight: 800;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.closed-panel {
+  margin-top: 0.9rem;
+  background: var(--closed);
+  border: 3px dashed #8a7d5f;
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  text-align: center;
+  font-weight: 800;
+  color: #6b6250;
+  font-size: 1.05rem;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.event-card {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.event-card.is-started { opacity: 0.65; box-shadow: var(--shadow-sm); }
+
+.event-game {
+  font-family: "Arial Black", "Trebuchet MS", sans-serif;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.event-meta { font-weight: 700; color: var(--purple); margin: 0; }
+
+.count-badge {
+  align-self: flex-start;
+  background: var(--goblin);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-weight: 900;
+  box-shadow: var(--shadow-sm);
+}
+
+.count-badge.zero { background: var(--tan); }
+
+.people { list-style: none; margin: 0; padding: 0; font-size: 0.92rem; }
+.people li::before { content: "🎲 "; }
+.people .mine { font-weight: 900; }
+
+.started-note { font-weight: 800; color: #b3001b; margin: 0; }
+
+.card-controls { margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+
+.guests-label { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.9rem; }
+
+/* ---------- panels (drop-ins / manage) ---------- */
+
+.panel {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 1.6rem auto;
+  padding: 1.1rem 1.2rem 1.3rem;
+  width: calc(100% - 2rem);
+}
+
+.panel h2 {
+  font-family: "Arial Black", "Trebuchet MS", sans-serif;
+  margin: 0 0 0.3rem;
+  font-size: 1.4rem;
+}
+
+.panel h3 { margin: 1.2rem 0 0.4rem; }
+.panel-sub { margin: 0 0 0.8rem; }
+
+.dropin-form, .manage-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.dropin-form label, .manage-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.dropin-group {
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 0.7rem 0.9rem;
+  margin-top: 0.8rem;
+  background: var(--cream);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+
+.dropin-group .dg-title { font-weight: 900; }
+.dropin-group .people { flex-basis: 100%; }
+
+.manage-event {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+  border-top: 2px dashed #cbbf9d;
+  padding: 0.7rem 0;
+}
+
+.manage-event label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem 2.5rem;
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 560px) {
+  .site-header h1 { text-shadow: 3px 3px 0 var(--ink); }
+  .event-grid { grid-template-columns: 1fr; }
+  .btn { width: 100%; }
+  .card-controls .btn, .dropin-form .btn, .manage-row .btn { width: auto; }
+}

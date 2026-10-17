@@ -1,0 +1,20 @@
+# Live board state — seeded on first run, never committed
+data.json
+data.json.tmp
+
+# Dependencies (there are none, but just in case)
+node_modules/
+
+# Local config / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*
+*secret*
+config.local.*
+
+# Logs & OS noise
+*.log
+.DS_Store

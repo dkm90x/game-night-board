@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who's Coming? — Game Night Board</title>
+<meta name="description" content="See who's coming to game night. Tap “I'll be there” on your game so nobody skips a night thinking the tables will be empty.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="mascot" aria-hidden="true">🧌🧌</div>
+  <h1 id="storeName">Game Night Board</h1>
+  <p class="tagline">Who's coming to game night?</p>
+  <p class="sub">Game nights die when everybody stays home because they think nobody else is coming.
+     Tap <strong>“I'll be there”</strong> on your game so the whole store can see the night is on.</p>
+  <label class="you-label">Your name or handle (optional — shown on the board)
+    <input id="yourHandle" type="text" maxlength="40" placeholder="e.g. Alex" autocomplete="off">
+  </label>
+</header>
+
+<nav class="day-strip" id="dayStrip" aria-label="Jump to a day"></nav>
+
+<main id="board" aria-live="polite">
+  <p class="loading">Loading the board…</p>
+</main>
+
+<section class="panel" id="dropinPanel">
+  <h2>🚶 Drop-ins</h2>
+  <p class="panel-sub">No scheduled event? Just showing up to play, trade, or hang out counts too.
+     Add yourself so others know the shop will be alive.</p>
+  <form id="dropinForm" class="dropin-form">
+    <label>Game
+      <input id="dropinGame" type="text" list="gameList" maxlength="80" placeholder="What are you playing?" required>
+      <datalist id="gameList"></datalist>
+    </label>
+    <label>Day
+      <select id="dropinDay"></select>
+    </label>
+    <label>Time window
+      <select id="dropinWindow">
+        <option>11 AM – 2 PM</option>
+        <option>2 PM – 5 PM</option>
+        <option selected>5 PM – 8 PM</option>
+        <option>After 8 PM</option>
+      </select>
+    </label>
+    <label>Bringing guests
+      <select id="dropinGuests">
+        <option value="0">Just me</option>
+        <option value="1">+1 guest</option>
+        <option value="2">+2 guests</option>
+        <option value="3">+3 guests</option>
+        <option value="4">+4 guests</option>
+        <option value="5">+5 guests</option>
+      </select>
+    </label>
+    <button type="submit" class="btn btn-green">I'll be there</button>
+  </form>
+  <p class="form-error" id="dropinError" role="alert"></p>
+  <div id="dropinList"></div>
+</section>
+
+<section class="panel" id="managePanel">
+  <h2>🛠️ Manage</h2>
+  <p class="panel-sub">For the store: set the name and keep the weekly schedule current.
+     Changes show up on the board right away.</p>
+
+  <form id="storeNameForm" class="manage-row">
+    <label>Store name
+      <input id="storeNameInput" type="text" maxlength="80" required>
+    </label>
+    <button type="submit" class="btn btn-purple">Save name</button>
+  </form>
+
+  <h3>Weekly events</h3>
+  <div id="manageEvents"></div>
+
+  <h3>Add an event</h3>
+  <form id="addEventForm" class="manage-row">
+    <label>Game
+      <input id="newGame" type="text" maxlength="80" placeholder="e.g. Commander Night" required>
+    </label>
+    <label>Day
+      <select id="newWeekday">
+        <option value="0">Sunday</option>
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+      </select>
+    </label>
+    <label>Start time
+      <input id="newTime" type="time" required>
+    </label>
+    <button type="submit" class="btn btn-green">Add event</button>
+  </form>
+  <p class="form-error" id="manageError" role="alert"></p>
+</section>
+
+<footer class="site-footer">
+  <p>No accounts, no passwords — your taps are remembered on this device only.
+     Counts are shared, so everyone looking at this board sees the same night.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
