@@ -48,13 +48,13 @@ async function stateFor(base, deviceToken, from, to) {
 // Saturday, Oct 17 2026, 9:00 AM local — before any of that day's events.
 const SAT_MORNING = new Date(2026, 9, 17, 9, 0);
 
-test('state seeds the store name and the nine-event weekly schedule', async (t) => {
+test('state seeds the store name and the ten-event weekly schedule', async (t) => {
   const srv = await startTestServer(SAT_MORNING);
   t.after(() => srv.close());
 
   const state = await stateFor(srv.base, 'device-a', '2026-10-17', '2026-10-23');
   assert.equal(state.storeName, 'Goblins of the Gorge');
-  assert.equal(state.events.length, 9);
+  assert.equal(state.events.length, 10);
   assert.equal(state.hours[2], null, 'Tuesday is closed');
   assert.equal(state.hours[3], null, 'Wednesday is closed');
   assert.deepEqual(state.hours[5], { open: '11:00', close: '21:00' }, 'Friday hours');
@@ -65,7 +65,7 @@ test('rsvp toggle on adds the person and their guests to the totals', async (t) 
   t.after(() => srv.close());
 
   const state0 = await stateFor(srv.base, 'device-a', '2026-10-17', '2026-10-23');
-  const fnm = state0.events.find((e) => e.game === 'Friday Night Magic');
+  const fnm = state0.events.find((e) => e.game === 'Friday Night Magic — Sealed League & Commander');
   assert.ok(fnm, 'seed includes Friday Night Magic');
 
   const on = await post(srv.base, '/api/rsvp/toggle', {
@@ -90,7 +90,7 @@ test('rsvp toggle off removes the person and the total', async (t) => {
   t.after(() => srv.close());
 
   const state0 = await stateFor(srv.base, 'device-a', '2026-10-17', '2026-10-23');
-  const fnm = state0.events.find((e) => e.game === 'Friday Night Magic');
+  const fnm = state0.events.find((e) => e.game === 'Friday Night Magic — Sealed League & Commander');
   const payload = { eventId: fnm.id, occurrenceDate: '2026-10-23', deviceToken: 'device-a', handle: 'Alex', guests: 1 };
 
   await post(srv.base, '/api/rsvp/toggle', payload);
@@ -108,9 +108,9 @@ test("a second device sees the first device's rsvp", async (t) => {
   t.after(() => srv.close());
 
   const state0 = await stateFor(srv.base, 'device-a', '2026-10-17', '2026-10-23');
-  const fab = state0.events.find((e) => e.game === 'Flesh and Blood Armory');
+  const draft = state0.events.find((e) => e.game === 'Magic: Booster Draft');
   await post(srv.base, '/api/rsvp/toggle', {
-    eventId: fab.id,
+    eventId: draft.id,
     occurrenceDate: '2026-10-17', // that same Saturday, 1 PM — still ahead at 9 AM
     deviceToken: 'device-a',
     handle: 'Sam',
@@ -118,13 +118,13 @@ test("a second device sees the first device's rsvp", async (t) => {
   });
 
   const seenByB = await stateFor(srv.base, 'device-b', '2026-10-17', '2026-10-23');
-  const groupB = seenByB.rsvps.find((g) => g.eventId === fab.id && g.occurrenceDate === '2026-10-17');
+  const groupB = seenByB.rsvps.find((g) => g.eventId === draft.id && g.occurrenceDate === '2026-10-17');
   assert.ok(groupB, 'device B sees the rsvp');
   assert.equal(groupB.total, 1);
   assert.deepEqual(groupB.people, [{ handle: 'Sam', guests: 0, mine: false }]);
 
   const seenByA = await stateFor(srv.base, 'device-a', '2026-10-17', '2026-10-23');
-  const groupA = seenByA.rsvps.find((g) => g.eventId === fab.id && g.occurrenceDate === '2026-10-17');
+  const groupA = seenByA.rsvps.find((g) => g.eventId === draft.id && g.occurrenceDate === '2026-10-17');
   assert.equal(groupA.people[0].mine, true, 'device A sees it as its own');
 });
 
@@ -164,10 +164,10 @@ test("a slot that already started today is rejected, a later one is fine", async
   t.after(() => srv.close());
 
   const state0 = await stateFor(srv.base, 'device-a', '2026-10-17', '2026-10-23');
-  const fab = state0.events.find((e) => e.game === 'Flesh and Blood Armory'); // Sat 13:00
+  const draft = state0.events.find((e) => e.game === 'Magic: Booster Draft'); // Sat 13:00
 
   const past = await post(srv.base, '/api/rsvp/toggle', {
-    eventId: fab.id,
+    eventId: draft.id,
     occurrenceDate: '2026-10-17',
     deviceToken: 'device-a',
     handle: 'Alex',

@@ -31,15 +31,16 @@ const CLOSED_MESSAGE = 'The store is closed on Tuesdays and Wednesdays.';
 const SEED_STORE_NAME = 'Goblins of the Gorge';
 
 const SEED_EVENTS = [
-  { game: 'Open Game Night', weekday: 1, startTime: '17:00' },
-  { game: 'Magic: Commander Night', weekday: 4, startTime: '17:30' },
-  { game: 'Dungeons & Dragons League', weekday: 4, startTime: '18:00' },
-  { game: 'Pokémon Open Play', weekday: 5, startTime: '16:00' },
-  { game: 'Friday Night Magic', weekday: 5, startTime: '18:00' },
-  { game: 'Pokémon League', weekday: 6, startTime: '12:00' },
-  { game: 'Flesh and Blood Armory', weekday: 6, startTime: '13:00' },
-  { game: 'D&D Beginner One-Shot', weekday: 0, startTime: '12:00' },
-  { game: 'Open Game Night', weekday: 0, startTime: '14:00' },
+  { game: 'Beyblade', weekday: 0, startTime: '12:30' },
+  { game: 'Lorcana', weekday: 0, startTime: '13:30' },
+  { game: 'Riftbound', weekday: 0, startTime: '14:00' },
+  { game: 'Dungeons & Dragons', weekday: 0, startTime: '15:00' },
+  { game: 'Pokémon TCG / VG / GO', weekday: 1, startTime: '18:00' },
+  { game: 'Dungeons & Dragons', weekday: 5, startTime: '17:00' },
+  { game: 'Friday Night Magic — Sealed League & Commander', weekday: 5, startTime: '17:30' },
+  { game: 'Magic: Booster Draft', weekday: 6, startTime: '13:00' },
+  { game: 'Magic: Commander', weekday: 6, startTime: '16:00' },
+  { game: 'Magic: Pauper', weekday: 6, startTime: '16:00' },
 ];
 
 // ---------- date helpers (all local-time, YYYY-MM-DD strings) ----------
